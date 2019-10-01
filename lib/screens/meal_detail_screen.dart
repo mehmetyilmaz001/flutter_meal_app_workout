@@ -32,40 +32,42 @@ class MealDetailScreen extends StatelessWidget {
     final mealId = ModalRoute.of(context).settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(selectedMeal.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(children: <Widget>[
-            Container(
-              height: 320,
-              width: double.infinity,
-              child: Image.network(
-                selectedMeal.imageUrl,
-                fit: BoxFit.cover,
-              ),
+      appBar: AppBar(
+        title: Text(selectedMeal.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[
+          Container(
+            height: 320,
+            width: double.infinity,
+            child: Image.network(
+              selectedMeal.imageUrl,
+              fit: BoxFit.cover,
             ),
-            buildSectionTitle(context, 'Ingredients'),
-
-            buildContainer(ListView.builder(
-              itemBuilder: (ctx, i) => ListTile(
-                title: Text(selectedMeal.ingredients[i]),
+          ),
+          buildSectionTitle(context, 'Ingredients'),
+          buildContainer(ListView.builder(
+            itemBuilder: (ctx, i) => ListTile(
+              title: Text(selectedMeal.ingredients[i]),
+            ),
+            itemCount: selectedMeal.ingredients.length,
+          )),
+          buildSectionTitle(context, 'Steps'),
+          buildContainer(ListView.builder(
+            itemBuilder: (ctx, i) => ListTile(
+              leading: CircleAvatar(
+                child: Text('${i + 1}'),
               ),
-              itemCount: selectedMeal.ingredients.length,
-            )),
-
-            buildSectionTitle(context, 'Steps'),
-
-            buildContainer(ListView.builder(
-              itemBuilder: (ctx, i) => ListTile(
-                leading: CircleAvatar(
-                  child: Text('${i + 1}'),
-                ),
-                title: Text(selectedMeal.steps[i]),
-              ),
-              itemCount: selectedMeal.steps.length,
-            )),
-          ]),
-        ));
+              title: Text(selectedMeal.steps[i]),
+            ),
+            itemCount: selectedMeal.steps.length,
+          )),
+        ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: () => Navigator.of(context).pop(mealId),
+      ),
+    );
   }
 }
